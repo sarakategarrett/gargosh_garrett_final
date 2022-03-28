@@ -1,0 +1,64 @@
+<!-- about page -->
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock %}
+
+{% block nav_active_about %}active{% endblock %}
+
+{% block body %}
+<!-- Header - set the background image for the header in the line below-->
+        <header class="py-5 bg-image-full" style="background-image: url('https://www.investopedia.com/thmb/l__0yRGdXNiac8kUY8Mj2LxF2uU=/2301x1303/filters:fill(auto,1)/GettyImages-1220909109-00cd067f887a48408340f54ddf0ecb1d.jpg')">
+            <div class="text-center my-5">
+                <h1 class="text-white fs-2 fw-bolder btn-dark btn-lg">About to DIY Money</h1>
+            </div>
+        </header>
+
+<!-- About section-->
+        <section id="about">
+            <div class="container px-4">
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-10">
+                        <p class="lead">DIY Money was founded in 2022 by two professors. The main idea of DIY Money is to help educate those that want to DIY thier own finances. The two main puposes for this site is to provide educaiton resources and a software system to help manage the wealth. </p>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
+
+                </div>
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-2">
+                        <img src="/static/images/peter_cardon.jpg" alt="Dr. Peter Cardon" class="img-thumbnail">
+                    </div>
+                    <div class="col-lg-8">
+
+                        <h2>Meet Dr. Peter Cardon</h2>
+
+                        <p class="lead">Dr. Cardon is a DIY enthusiast. He has many accomplishments. A recent one graduating from the University of Georgia with a Master's degree in Personal Financial Planning. Dr. Cardon is an expert in communication and has one of the most popular textbooks in business communication on the market. Dr. Cardon is an avid researcher. He has many citations and has presented in conferences all over the world. Dr. Cardon is also an avid runner. He has completed marathons and half marathons for fun. Many of the ideas posted in the resource section are from Dr. Cardon.</p>
+                        <br>
+                        <br>
+                        <br>
+
+                    </div>
+                </div>
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-2">
+                        <img src="/static/images/bryan_marshall.jpg" alt="Dr. Bryan Marshall" class="img-thumbnail">
+                    </div>
+                    <div class="col-lg-8">
+
+                        <h2>Meet Dr. Bryan Marshall</h2>
+                        <p class="lead">Dr. Marshall currently teaches computing at Georgia College. Like Dr. Cardon, he recently graduated from the University of Georgia with a Master's degree in Personal Financial Planning. His PhD is in Management Information Systems from Utah State University. Dr. Marshall served in the United States Marine Corps for 6 years in the infantry (0311). In his off time he loves being with his kids and traveling the US.</p>
+                        <br>
+                        <br>
+                        <br>
+
+                        <br>
+                        <br>
+                        <br>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block nav_active_login %}active" aria-current"page{% endblock %}
+
+{% block body %}
+<!-- Header - set the background image for the header in the line below-->
+        <header class="py-5 bg-image-full" style="background-image: url('https://www.investopedia.com/thmb/l__0yRGdXNiac8kUY8Mj2LxF2uU=/2301x1303/filters:fill(auto,1)/GettyImages-1220909109-00cd067f887a48408340f54ddf0ecb1d.jpg')">
+            <div class="text-center my-5">
+                <h1 class="text-white fs-2 fw-bolder btn-dark btn-lg">Log In</h1>
+            </div>
+        </header>
+
+
+
+<!-- login area -->
+<section id="about">
+            <div class="container px-4">
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-10">
+
+                        <form action="" method="POST" novalidate>
+                            {{ form.hidden_tag() }}
+                            <p>
+                                {{ form.username.label }}: admin<br>
+                                {{ form.username(size=32) }}
+                                {% for error in form.username.errors %}
+                                <span style="...">[{{ error }}] </span>
+                                {% endfor %}
+                            </p>
+                            <p>
+                                {{ form.password.label }}: Bluehorse7<br>
+                                {{ form.password(size=32) }}
+                                {% for error in form.password.errors %}
+                                <span style="...">[{{ error }}]</span>
+                                {% endfor %}
+                            </p>
+                            <p> {{ form.remember_me() }} {{ form.remember_me.label }} </p>
+                            <p> {{ form.submit() }} </p>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}
+
