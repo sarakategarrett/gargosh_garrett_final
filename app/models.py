@@ -18,3 +18,12 @@ class Asset(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(166))
     date = db.Column(db.Date)
+    tickers = db.relationship('Ticker', backref='tickers',lazy=True)
+
+
+class Ticker(db.Model):
+    ticker_id = db.Column(db.Integer, primary_key=True)
+    ticker_symbol = db.Column(db.String(166))
+    company_name = db.Column(db.String(166))
+    current_price = db.Column(db.String(166))
+    id = db.Column(db.Integer, db.ForeignKey('asset.id'), nullable=False)

@@ -1,7 +1,7 @@
 from flask import render_template, session, request, redirect, url_for, flash
 from app import app, db
-from app.forms import LoginForm, AssetForm
-from app.models import User, Asset
+from app.forms import LoginForm, AssetForm, TickerForm
+from app.models import User, Asset, Ticker
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from app.formatting import *
 
@@ -83,9 +83,40 @@ def asset_delete(id):
     return redirect(url_for('asset'))
 
 
-@app.route('/tickers')
+@app.route('/tickers', methods=['GET', 'POST'])
 def tickers():
+    form = TickerForm()
+    if request.method == 'POST':
+        ticker_symbol = request.form.get("ticker_symbol")
+        company_name = request.form.get("company_name")
+        current_price = request.form.get("current_price")
+        ticker = Ticker(ticker_symbol=ticker_symbol, company_name=company_name, current_price=current_price)
+        db.session.add(ticker)
+        db.session.commit()
+        return redirect(url_for('tickers'))
+    tickers = Ticker.query.order_by(Ticker.company_name)
+    # this is a join.. the item in the join section is the left table
+    return render_template('tickers.html', form=form, tickers=tickers)
     return render_template("tickers.html")
+
+@app.route('/ticker_update/<ticker_id>/', methods=['GET', 'POST'])
+def ticker_update(ticker_id):
+    ticker = Ticker.query.get(ticker_id)
+    ticker.ticker_symbol = request.form.get("ticker_symbol")
+    ticker.company_name = request.form.get("company_name")
+    ticker.current_price = request.form.get("current_price")
+    ticker.id = request.form.get("id")
+    db.session.commit()
+    flash(f"{ticker.ticker_symbol} has been updated.")
+    return redirect(url_for('tickers'))
+
+
+@app.route('/ticker_delete/<ticker_id>/', methods=['GET', 'POST'])
+def ticker_delete(ticker_id):
+    db.session.query(Ticker).filter(Ticker.id == id).delete()
+    db.session.commit()
+    flash(f"The ticker has been deleted.")
+    return redirect(url_for('tickers'))
 
 
 @app.route('/logout')

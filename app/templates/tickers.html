@@ -8,93 +8,222 @@
 <!-- Header - set the background image for the header in the line below-->
         <header class="py-5 bg-image-full" style="background-image: url('https://www.investopedia.com/thmb/l__0yRGdXNiac8kUY8Mj2LxF2uU=/2301x1303/filters:fill(auto,1)/GettyImages-1220909109-00cd067f887a48408340f54ddf0ecb1d.jpg')">
             <div class="text-center my-5">
-                <h1 class="text-white fs-2 fw-bolder btn-dark btn-lg">Welcome to DIY Money</h1>
+                <h1 class="text-white fs-2 fw-bolder btn-dark btn-lg">Ticker Management</h1>
             </div>
         </header>
 
-        <!-- card to sign up-->
-        <header class="py-4">
-            <div class="container px-lg-5">
-                <div class="p-4 p-lg-1 bg-light rounded-3 text-center">
-                    <div class="m-4 m-lg-5">
-                        <p class="fs-4">This fresh new app is here to help you track your net worth and manage your portfolio of assets.</p>
-                        <a class="btn btn-dark btn-lg" href="#!">Sign Up Today</a>
-                    </div>
-                </div>
-            </div>
-        </header>
 
-        <!-- Net Worth Tracking-->
-        <section class="py-2">
-            <div class="container my-3">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <h2>Net Worth Tracking</h2>
-                        <p class="lead">It is essential you track your net worth on a schedule. Use this app to help track your net worth over time.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Cash Flow Management-->
-        <section class="py-2">
-            <div class="container my-3">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <h2>Cash Flow Management</h2>
-                        <p class="lead">Otherwise known as budgeting, this essential skill is the most important on your road to financial freedom.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Asset Allocation-->
-        <section class="py-2">
-            <div class="container my-3">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <h2>Asset Allocation</h2>
-                        <p class="lead">Understanding your current asset allocation and what to do when the percentages get off is super important. This new app can help track your portfolio.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<br>
+                            <h1>Tickers
+                        <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#add_ticker">Add Ticker</button>
+                        <a role="button" class="btn btn-warning" aria-disabled="true" href="/ticker_price_update">Update Ticker Price</a></h1>
 
-        <!-- Savings Rate-->
-        <section class="py-2">
-            <div class="container my-3">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <h2>Saving Rate</h2>
-                        <p class="lead">When you know your savings rate and income, you can get a pretty good idea of when you will reach finanical independence.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                            <div class="modal fade" id="add_ticker" aria-labelledby="delete_modalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="add_modalLabel">Add Ticker</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="/tickers" method="POST" novalidate>
+                                                <div class="modal-body">
+                                                        <input id="csrf_token" name="csrf_token" type="hidden" value="IjNkNGUxOGFmM2Q4YTczMzI2MzMyYjAyMDI5YmE0Y2M4NDZmY2ZiNGIi.YkES4Q.WNEk6ZL5QWbDMnvQYDxUR2lQkwo">
+                                                    <p>
+                                                        <label for="ticker_symbol">Ticker Symbol</label><br>
+                                                        <input id="ticker_symbol" name="ticker_symbol" required size="32" type="text" value="">
 
-        <!-- Dividend Yield-->
-        <section class="py-2">
-            <div class="container my-3">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <h2>Dividend Yield</h2>
-                        <p class="lead">A dividend yield, otherwise known as a "Yield Shield" shows a yearly dividend amount. Most companies do not reduce their dividend rate, thereby you can realistically count on your dividend year after year</p>
-                    </div>
-                </div>
-        </section>
+                                                    </p>
+                                                    <p>
+                                                        <label for="company_name">Company Name</label><br>
+                                                        <input id="company_name" name="company_name" required size="32" type="text" value="">
 
-        <!-- Yearly Contributions-->
-        <section class="py-2">
-            <div class="container my-3">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <h2>Yearly Contributions</h2>
-                        <p class="lead">Keep track of your yearly contributions to your retirement accounts.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        </div>
-        </div>
+                                                    </p>
+                                                    <p>
+
+                                                        <select id="asset_class" name="asset_class"><option value="1">INT: DEVELOPED</option><option value="2">INT: EMERGED</option><option value="3">US TOTAL STOCK</option><option value="4">US SMALL CAP</option><option value="5">US VALUE</option><option value="6">REIT</option><option value="7">LONG TERM BONDS</option><option value="8">TIPS</option><option value="9">CASH</option><option value="12">CASH</option></select>
+
+                                                    </p>
+                                                    <p> <input class="btn btn-success" id="submit" name="submit" type="submit" value="Submit"> </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                            </div>
+                        <table  class="table">
+                          <thead>
+                            <th scope="col">Ticker Symbol</th>
+                            <th scope="col">Company Name</th>
+                            <th scope="col">Current Price</th>
+                            <th scope="col">Asset Class</th>
+                          </thead>
+
+
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update_modal3">Update Info</button>
+                                <div class="modal fade" id="update_modal3" aria-labelledby="update_modalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="update_modalLabel">Update Ticker</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="/ticker_update/3/" method="POST" novalidate>
+                                                <div class="modal-body">
+
+                                                    <p>
+                                                        <label for="ticker_symbol">Ticker Symbol:</label><br>
+                                                        <input type="text" id="ticker_symbol" name="ticker_symbol" value="VEA">
+
+                                                    </p>
+                                                    <p>
+                                                        <label for="company_name">Company Name:</label><br>
+                                                        <input type="text" id="company_name" name="company_name" size=50 value="Vanguards Developed Market ETF">
+
+                                                    </p>
+                                                    <p>
+                                                        <label for="asset_class">Asset Class:</label><br>
+                                                    <select id="asset_class" name="asset_class">
+                                                      <option value="1" selected>INT: DEVELOPED</option>
+
+                                                      <option value="1">INT: DEVELOPED</option>
+
+                                                      <option value="2">INT: EMERGED</option>
+
+                                                      <option value="3">US TOTAL STOCK</option>
+
+                                                      <option value="4">US SMALL CAP</option>
+
+                                                      <option value="5">US VALUE</option>
+
+                                                      <option value="6">REIT</option>
+
+                                                      <option value="7">LONG TERM BONDS</option>
+
+                                                      <option value="8">TIPS</option>
+
+                                                      <option value="9">CASH</option>
+
+                                                      <option value="12">CASH</option>
+
+                                                    </select>
+
+                                                    </p>
+                                                    <p>
+
+
+                                                    </p>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="submit" class="btn btn-success" value="Submit">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                            </div>
+
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_modal3">Delete</button>
+
+                            <!-- DELETE MODAL -->
+                                <div class="modal fade" id="delete_modal3" aria-labelledby="delete_modalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="delete_modalLabel">Delete Ticker</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete VEA? This can't be undone.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form action="/ticker_delete/3/." method="POST">
+                                                    <input type="submit" class="btn btn-primary" value="Delete">
+                                                </form>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td align="left">VDIPX</td>
+                            <td align="left">Vanguard Developed Market</td>
+                            <td align="left">$24.93</td>
+                            <td align="left">INT: DEVELOPED</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update_modal5">Update Info</button>
+                                <div class="modal fade" id="update_modal5" aria-labelledby="update_modalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="update_modalLabel">Update Ticker</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="/ticker_update/5/" method="POST" novalidate>
+                                                <div class="modal-body">
+
+                                                    <p>
+                                                        <label for="ticker_symbol">Ticker Symbol:</label><br>
+                                                        <input type="text" id="ticker_symbol" name="ticker_symbol" value="VDIPX">
+
+                                                    </p>
+                                                    <p>
+                                                        <label for="company_name">Company Name:</label><br>
+                                                        <input type="text" id="company_name" name="company_name" size=50 value="Vanguard Developed Market">
+
+                                                    </p>
+                                                    <p>
+                                                        <label for="asset_class">Asset Class:</label><br>
+                                                    <select id="asset_class" name="asset_class">
+                                                      <option value="1" selected>INT: DEVELOPED</option>
+
+                                                      <option value="1">INT: DEVELOPED</option>
+
+                                                      <option value="2">INT: EMERGED</option>
+
+                                                      <option value="3">US TOTAL STOCK</option>
+
+                                                      <option value="4">US SMALL CAP</option>
+
+                                                      <option value="5">US VALUE</option>
+
+                                                      <option value="6">REIT</option>
+
+                                                      <option value="7">LONG TERM BONDS</option>
+
+                                                      <option value="8">TIPS</option>
+
+                                                      <option value="9">CASH</option>
+
+                                                      <option value="12">CASH</option>
+
+                                                    </select>
+
+                                                    </p>
+                                                    <p>
+
+
+                                                    </p>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="submit" class="btn btn-success" value="Submit">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                            </div>
+
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_modal5">Delete</button>
+
+
 
 {% endblock %}

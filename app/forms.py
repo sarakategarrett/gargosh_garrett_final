@@ -13,4 +13,9 @@ class AssetForm(FlaskForm):
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class TickerForm(FlaskForm):
+    ticker_symbol = StringField('Ticker Symbol', validators=[DataRequired()])
+    company_name = StringField('Company Name', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
 
