@@ -3,7 +3,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from datetime import timedelta
-#from app.db_connect import connect
+from app.db_connect import connect
 
 app = Flask(__name__)
 app.config.from_object(Config)

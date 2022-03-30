@@ -5,7 +5,7 @@ from flask_login import UserMixin
 def load_user(id):
     return User.query.get(int(id))
 
-class User(UserMixin,db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -15,10 +15,10 @@ class User(UserMixin,db.Model):
         return (self.id)
 
 class Asset(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(166))
-    date = db.Column(db.Date)
-    tickers = db.relationship('Ticker', backref='tickers',lazy=True)
+    asset_class_id = db.Column(db.Integer, primary_key=True)
+    asset_class_name = db.Column(db.String(166))
+    allocation_percent = db.Column(db.Float)
+    tickers = db.relationship('Ticker', backref='tickers', lazy=True)
 
 
 class Ticker(db.Model):
@@ -26,4 +26,5 @@ class Ticker(db.Model):
     ticker_symbol = db.Column(db.String(166))
     company_name = db.Column(db.String(166))
     current_price = db.Column(db.String(166))
-    id = db.Column(db.Integer, db.ForeignKey('asset.id'), nullable=False)
+    asset_class_id = db.Column(db.Integer, db.ForeignKey('asset.asset_class_id'), nullable=False)
+

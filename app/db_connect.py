@@ -6,6 +6,7 @@ def connect():
                                  port=3306,
                                  database='sys',
                                  user='admin',
-                                cursorclass=pymysql.cursors.DictCursor)
+                                 password='Bluehorse7',
+                                 cursorclass=pymysql.cursors.DictCursor)
     print("Connected")
     return connection

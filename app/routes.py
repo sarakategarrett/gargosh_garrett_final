@@ -4,14 +4,15 @@ from app.forms import LoginForm, AssetForm, TickerForm
 from app.models import User, Asset, Ticker
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from app.formatting import *
+from app.functions import *
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 
 @login_manager.user_loader
-def user_loader(user_id):
-    return User.query.get(int(user_id))
+def user_loader(id):
+    return User.query.get(int(id))
 
 
 @app.route('/')
@@ -54,30 +55,30 @@ def login():
 def asset():
     form = AssetForm()
     if request.method == 'POST':
-        name = request.form.get("name")
-        date = request.form.get("date")
-        assets = Asset(name=name, date=date)
+        asset_class_name = request.form.get("asset_class_name")
+        allocation_percent = request.form.get("allocation_percent")
+        assets = Asset(asset_class_name=asset_class_name, allocation_percent=allocation_percent)
         db.session.add(assets)
         db.session.commit()
         return redirect(url_for('asset'))
-    assets = Asset.query.order_by(Asset.name)
+    assets = Asset.query.order_by(Asset.asset_class_name)
     # this is a join.. the item in the join section is the left table
     return render_template('asset_class.html', form=form, assets=assets)
 
 
-@app.route('/asset_update/<id>/', methods=['GET', 'POST'])
-def asset_update(id):
-    asset = Asset.query.get(id)
-    asset.name = request.form.get("name")
-    asset.date = request.form.get("date")
+@app.route('/asset_update/<asset_class_id>/', methods=['GET', 'POST'])
+def asset_update(asset_class_id):
+    asset = Asset.query.get(asset_class_id)
+    asset.asset_class_name = request.form.get("asset_class_name")
+    asset.allocation_percent = request.form.get("allocation_percent")
     db.session.commit()
-    flash(f"{asset.name} has been updated.")
+    flash(f"{asset.asset_class_name} has been updated.")
     return redirect(url_for('asset'))
 
 
-@app.route('/asset_delete/<id>/', methods=['GET', 'POST'])
-def asset_delete(id):
-    db.session.query(Asset).filter(Asset.id == id).delete()
+@app.route('/asset_delete/<asset_class_id>/', methods=['GET', 'POST'])
+def asset_delete(asset_class_id):
+    db.session.query(Asset).filter(Asset.asset_class_id == asset_class_id).delete()
     db.session.commit()
     flash(f"The asset class has been deleted.")
     return redirect(url_for('asset'))
@@ -86,18 +87,23 @@ def asset_delete(id):
 @app.route('/tickers', methods=['GET', 'POST'])
 def tickers():
     form = TickerForm()
+
+    asset_classes = get_asset_classes()
+
+    form.asset_classes.choices = [(asset_class['asset_class_id'], asset_class['asset_class_name']) for asset_class in asset_classes]
+
     if request.method == 'POST':
         ticker_symbol = request.form.get("ticker_symbol")
         company_name = request.form.get("company_name")
         current_price = request.form.get("current_price")
-        ticker = Ticker(ticker_symbol=ticker_symbol, company_name=company_name, current_price=current_price)
-        db.session.add(ticker)
+        tickers = Ticker(ticker_symbol=ticker_symbol, company_name=company_name, current_price=current_price)
+        db.session.add(tickers)
         db.session.commit()
         return redirect(url_for('tickers'))
     tickers = Ticker.query.order_by(Ticker.company_name)
     # this is a join.. the item in the join section is the left table
     return render_template('tickers.html', form=form, tickers=tickers)
-    return render_template("tickers.html")
+    ##return render_template("tickers.html")
 
 @app.route('/ticker_update/<ticker_id>/', methods=['GET', 'POST'])
 def ticker_update(ticker_id):

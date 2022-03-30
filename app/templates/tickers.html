@@ -33,7 +33,7 @@
     <a role="button" class="btn btn-warning" aria-disabled="true" href="/ticker_price_update">Update Ticker Price</a>
 </h1>
 
-<!-- add ticker -->
+<!-- add ticker modal -->
 <div class="modal fade" id="add_ticker" aria-labelledby="add_ticker_Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -59,9 +59,8 @@
                                 {% endfor %}
                             </p>
                             <p>
-                                <!--
-                                <select id="ticker_symbol" name="ticker_symbol"><option value="1">INT: DEVELOPED</option><option value="2">INT: EMERGED</option><option value="3">US TOTAL STOCK</option><option value="4">US SMALL CAP</option><option value="5">US VALUE</option><option value="6">REIT</option><option value="7">LONG TERM BONDS</option><option value="8">TIPS</option><option value="9">CASH</option><option value="12">CASH</option></select>
-                                -->
+                                <!-- dropdown list selector -->
+                                {{ form.asset_class }}
                             </p>
                             <p> {{ form.submit(class="btn btn-success") }} </p>
                         </div>
@@ -81,39 +80,30 @@
         <th scope="col">Current Price</th>
         <th scope="col">Asset Class</th>
     </thead>
-        {% for ticker in tickers %}
-    <tr>
-        {% if not ticker.ticker_symbol  %}
-        <td align="left"> {{ ticker.ticker_symbol }}</td>
-        <td align="left"> {{ ticker.company_name }}</td>
-        {% else %}
-        <td align="left"> {{ ticker.ticker_symbol }}</td>
-        <td align="left"> {{ ticker.company_name }}</td>
-        {% endif %}
-        <td>
 
-<!-- add modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update_modal3">Update Info</button>
-            <div class="modal fade" id="update_modal{{ ticker.ticker_id }}" aria-labelledby="update_modalLabel" aria-hidden="true">
+
+<!-- update modal -->
+
+            <div class="modal fade" id="update_modal{{ tickers.ticker_id }}" aria-labelledby="update_modalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="update_modalLabel">Update Ticker</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="{{ url_for('ticker_update', ticker_id=ticker.ticker_id) }}" method="POST" novalidate>
+                        <form action="{{ url_for('ticker_update', ticker_id=tickers.ticker_id) }}" method="POST" novalidate>
                             <div class="modal-body">
                                 <p>
                                     <label for="ticker_symbol">Ticker Symbol:</label><br>
-                                    <input type="text" id="ticker_symbol" name="company_name" value="{{ ticker.ticker_symbol }}">
+                                    <input type="text" id="ticker_symbol" name="company_name" value="{{ tickers.ticker_symbol }}">
                                 </p>
                                 <p>
                                     <label for="company_name">Company Name:</label><br>
-                                    <input type="text" id="ticker_symbol" name="company_name" value="{{ ticker.company_name }}">
+                                    <input type="text" id="ticker_symbol" name="company_name" value="{{ tickers.company_name }}">
                                 </p>
                                 <p>
                                     <label for="asset_class">Asset Class:</label><br>
-                                    <select id="asset_class" name="asset_class">
+                                    <select id="ticker_symbol" name="asset_class">
                                         <option value="1" selected>INT: DEVELOPED</option>
                                         <option value="1">INT: DEVELOPED</option>
                                         <option value="2">INT: EMERGED</option>
@@ -140,7 +130,7 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_modal3">Delete</button>
+
 
             <!-- DELETE MODAL -->
                                 <div class="modal fade" id="delete_modal3" aria-labelledby="delete_modalLabel" aria-hidden="true">
@@ -238,7 +228,7 @@
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_modal5">Delete</button>
                             </td>
                           </tr>
-{% endfor %}
+
 
 </table>
 

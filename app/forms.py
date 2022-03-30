@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
@@ -9,13 +9,14 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class AssetForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
+    asset_class_name = StringField('Name', validators=[DataRequired()])
+    allocation_percent = StringField('Allocation Percent', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class TickerForm(FlaskForm):
     ticker_symbol = StringField('Ticker Symbol', validators=[DataRequired()])
     company_name = StringField('Company Name', validators=[DataRequired()])
+    asset_classes = SelectField('Asset Class', choices=[])
     submit = SubmitField('Submit')
 
 
