@@ -81,7 +81,7 @@ def tickers():
         company_name = request.form.get("company_name")
         #current_price = request.form.get("current_price")
         asset_class_id = request.form.get('asset_classes')
-        ticker = Ticker(ticker_symbol=ticker_symbol, company_name=company_name, asset_class_id=asset_class_id)
+        ticker = Ticker(ticker_symbol=ticker_symbol, company_name=company_name, asset_classes=asset_classes)
         db.session.add(ticker)
         db.session.commit()
         return redirect(url_for('tickers'))
