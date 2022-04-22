@@ -45,7 +45,7 @@ def asset():
         db.session.add(assets)
         db.session.commit()
         return redirect(url_for('asset'))
-    assets = Asset.query.order_by(Asset.asset_class_name)
+    assets = get_asset_classes()
     # this is a join.. the item in the join section is the left table
     return render_template('asset_class.html', form=form, assets=assets)
 
@@ -81,13 +81,13 @@ def tickers():
         company_name = request.form.get("company_name")
         #current_price = request.form.get("current_price")
         asset_class_id = request.form.get('asset_classes')
-        ticker = Ticker(ticker_symbol=ticker_symbol, company_name=company_name, asset_classes=asset_classes)
+        ticker = Ticker(ticker_symbol=ticker_symbol, company_name=company_name, asset_class_id=asset_class_id)
         db.session.add(ticker)
         db.session.commit()
         return redirect(url_for('tickers'))
     tickers = get_tickers()
     # this is a join.. the item in the join section is the left table
-    return render_template('tickers.html', form=form, asset_classes=asset_classes, tickers=tickers)
+    return render_template('tickers.html', form=form, asset=asset, tickers=tickers)
 
 @app.route('/ticker_update/<ticker_id>/', methods=['GET', 'POST'])
 def ticker_update(ticker_id):

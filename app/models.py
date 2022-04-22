@@ -17,7 +17,7 @@ class User(UserMixin, db.Model):
 class Asset(db.Model):
     asset_class_id = db.Column(db.Integer, primary_key=True)
     asset_class_name = db.Column(db.String(166))
-    allocation_percent = db.Column(db.Float)
+    allocation_percent = db.Column(db.String(164))
     tickers = db.relationship('Ticker', backref='tickers', lazy=True)
 
 

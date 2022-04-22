@@ -78,14 +78,15 @@
     <tr>
         <td align="left">{{ ticker.ticker_symbol }}</td>
         <td align="left">{{ ticker.company_name }}</td>
-        <td align="left">{{ ticker.current_price | moneyFormat }}</td>
+        <td align="left">{{ ticker.current_price}}</td>
+        <!--moneyFormat-->
         <td align="left">{{ ticker.asset_class_name }}</td>
         <td>
 
 
 
 <!-- update modal -->
-            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#update_modal{{ticker.ticker_id}}">Add Ticker</button>
+            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#update_modal{{ticker.ticker_id}}">Update</button>
             <div class="modal fade" id="update_modal{{ tickers.ticker_id }}" aria-labelledby="update_modalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -148,6 +149,7 @@
                                 </div>
                             </td>
                           </tr>
+    <br>
 </table>
     {% endfor %}
 {% endblock %}

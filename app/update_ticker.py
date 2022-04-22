@@ -2,11 +2,10 @@ from app.db_connect import connect
 import yfinance as yf
 
 
-def gat_tickers_only():
+def get_tickers_only():
     conn = connect()
     with conn.cursor() as cur:
-        sql = f'SELECT ticker_symbol' \
-            f'from ticker'
+        sql = f'SELECT ticker_symbol FROM ticker'
         cur.execute(sql)
         return cur.fetchall()
 
