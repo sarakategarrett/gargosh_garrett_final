@@ -85,7 +85,7 @@ def tickers():
         db.session.add(ticker)
         db.session.commit()
         return redirect(url_for('tickers'))
-    tickers = get_ticker()
+    tickers = get_tickers()
     # this is a join.. the item in the join section is the left table
     return render_template('tickers.html', form=form, asset_classes=asset_classes, tickers=tickers)
 
