@@ -30,7 +30,7 @@
 <h1>Tickers
     <br>
     <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#add_ticker">Add Ticker</button>
-    <a role="button" class="btn btn-warning" aria-disabled="true" href="/ticker_price_update">Update Ticker Price</a>
+    <a role="button" class="btn btn-warning" aria-disabled="true" href="{{ url_for('ticker_price_update') }}">Update Ticker Price</a>
 </h1>
 
 <!-- add ticker modal -->
@@ -85,6 +85,7 @@
 
 
 <!-- update modal -->
+            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#update_modal{{ticker.ticker_id}}">Add Ticker</button>
             <div class="modal fade" id="update_modal{{ tickers.ticker_id }}" aria-labelledby="update_modalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -104,12 +105,12 @@
                                 </p>
                                 <p>
                                     <label for="asset_class">Asset Class:</label><br>
-                                    <select id="ticker_symbol" name="asset_class">
-                                        <option value="{{ticker.asset_class_id}}" selected>{{ticker.asset_class_name}}</option>
-                                        {% for asset_class in asset_classes %}
+                                    <select id="asset_class" name="asset_class">
+                                            <option value="{{ticker.asset_class_id}}" selected>{{ticker.asset_class_name}}</option>
+                                            {% for asset_class in asset_classes %}
 
-                                        <option value="{{asset_class.asset_class_id}}">{{asset_class.asset_class_name}}</option>
-                                        {% endfor %}
+                                            <option value="{{asset_class.asset_class_id}}">{{asset_class.asset_class_name}}</option>
+                                            {% endfor %}
                                     </select>
                                 </p>
                             </div>
@@ -125,7 +126,8 @@
 
 
             <!-- DELETE MODAL -->
-                                <div class="modal fade" id="delete_modal3" aria-labelledby="delete_modalLabel" aria-hidden="true">
+                                <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#delete_modal{{ticker.ticker_id}}">Delete</button>
+                                <div class="modal fade" id="delete_modal{{ticker.ticker_id}}" aria-labelledby="delete_modalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
