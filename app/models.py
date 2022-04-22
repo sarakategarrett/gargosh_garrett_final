@@ -23,8 +23,8 @@ class Asset(db.Model):
 
 class Ticker(db.Model):
     ticker_id = db.Column(db.Integer, primary_key=True)
-    ticker_symbol = db.Column(db.String(166))
-    company_name = db.Column(db.String(166))
-    current_price = db.Column(db.String(166))
+    ticker_symbol = db.Column(db.String(166), index=True, unique=True)
+    company_name = db.Column(db.String(166), index=True, unique=True)
+    #current_price = db.Column(db.String(166))
     asset_class_id = db.Column(db.Integer, db.ForeignKey('asset.asset_class_id'), nullable=False)
 

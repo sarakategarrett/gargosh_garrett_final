@@ -47,20 +47,14 @@
                             <p>
                                 {{ form.ticker_symbol.label }}<br>
                                 {{ form.ticker_symbol(size=32) }}
-                                {% for error in form.ticker_symbol.errors %}
-                                <span style="color: red;">[{{ error }}] </span>
-                                {% endfor %}
                             </p>
                             <p>
                                 {{ form.company_name.label }}<br>
                                 {{ form.company_name(size=32) }}
-                                {% for error in form.company_name.errors %}
-                                <span style="color: red;">[{{ error }}] </span>
-                                {% endfor %}
                             </p>
                             <p>
                                 <!-- dropdown list selector -->
-                                {{ form.asset_class }}
+                                {{ form.asset_class(class='dropdown') }}
                             </p>
                             <p> {{ form.submit(class="btn btn-success") }} </p>
                         </div>
@@ -80,10 +74,17 @@
         <th scope="col">Current Price</th>
         <th scope="col">Asset Class</th>
     </thead>
+    {% for ticker in tickers %}
+    <tr>
+        <td align="left">{{ ticker.ticker_symbol }}</td>
+        <td align="left">{{ ticker.company_name }}</td>
+        <td align="left">{{ ticker.current_price | moneyFormat }}</td>
+        <td align="left">{{ ticker.asset_class_name }}</td>
+        <td>
+
 
 
 <!-- update modal -->
-
             <div class="modal fade" id="update_modal{{ tickers.ticker_id }}" aria-labelledby="update_modalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -95,30 +96,21 @@
                             <div class="modal-body">
                                 <p>
                                     <label for="ticker_symbol">Ticker Symbol:</label><br>
-                                    <input type="text" id="ticker_symbol" name="company_name" value="{{ tickers.ticker_symbol }}">
+                                    <input type="text" id="ticker_symbol" name="ticker_symbol" value="{{ tickers.ticker_symbol }}">
                                 </p>
                                 <p>
                                     <label for="company_name">Company Name:</label><br>
-                                    <input type="text" id="ticker_symbol" name="company_name" value="{{ tickers.company_name }}">
+                                    <input type="text" id="company_name" name="company_name" value="{{ tickers.company_name }}">
                                 </p>
                                 <p>
                                     <label for="asset_class">Asset Class:</label><br>
                                     <select id="ticker_symbol" name="asset_class">
-                                        <option value="1" selected>INT: DEVELOPED</option>
-                                        <option value="1">INT: DEVELOPED</option>
-                                        <option value="2">INT: EMERGED</option>
-                                        <option value="3">US TOTAL STOCK</option>
-                                        <option value="4">US SMALL CAP</option>
-                                        <option value="5">US VALUE</option>
-                                        <option value="6">REIT</option>
-                                        <option value="7">LONG TERM BONDS</option>
-                                        <option value="8">TIPS</option>
-                                        <option value="9">CASH</option>
-                                        <option value="12">CASH</option>
+                                        <option value="{{ticker.asset_class_id}}" selected>{{ticker.asset_class_name}}</option>
+                                        {% for asset_class in asset_classes %}
 
+                                        <option value="{{asset_class.asset_class_id}}">{{asset_class.asset_class_name}}</option>
+                                        {% endfor %}
                                     </select>
-                                </p>
-                                <p>
                                 </p>
                             </div>
                             <div class="modal-footer">
@@ -141,11 +133,11 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Are you sure you want to delete VEA? This can't be undone.
+                                                <p>Are you sure you want to delete "{{ticker.ticker_symbol}}"? This can't be undone.
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <form action="/ticker_delete/3/." method="POST">
+                                                <form action="{{url_for('ticker_delete', ticker_id=ticker.ticker_id}}" method="POST">
                                                     <input type="submit" class="btn btn-primary" value="Delete">
                                                 </form>
                                           </div>
@@ -154,82 +146,6 @@
                                 </div>
                             </td>
                           </tr>
-
-                          <tr>
-                            <td align="left">VDIPX</td>
-                            <td align="left">Vanguard Developed Market</td>
-                            <td align="left">$24.93</td>
-                            <td align="left">INT: DEVELOPED</td>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update_modal5">Update Info</button>
-                                <div class="modal fade" id="update_modal5" aria-labelledby="update_modalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="update_modalLabel">Update Ticker</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="/ticker_update/5/" method="POST" novalidate>
-                                                <div class="modal-body">
-
-                                                    <p>
-                                                        <label for="ticker_symbol">Ticker Symbol:</label><br>
-                                                        <input type="text" id="ticker_symbol" name="ticker_symbol" value="VDIPX">
-
-                                                    </p>
-                                                    <p>
-                                                        <label for="company_name">Company Name:</label><br>
-                                                        <input type="text" id="company_name" name="company_name" size=50 value="Vanguard Developed Market">
-
-                                                    </p>
-                                                    <p>
-                                                        <label for="asset_class">Asset Class:</label><br>
-                                                    <select id="asset_class" name="asset_class">
-                                                      <option value="1" selected>INT: DEVELOPED</option>
-
-                                                      <option value="1">INT: DEVELOPED</option>
-
-                                                      <option value="2">INT: EMERGED</option>
-
-                                                      <option value="3">US TOTAL STOCK</option>
-
-                                                      <option value="4">US SMALL CAP</option>
-
-                                                      <option value="5">US VALUE</option>
-
-                                                      <option value="6">REIT</option>
-
-                                                      <option value="7">LONG TERM BONDS</option>
-
-                                                      <option value="8">TIPS</option>
-
-                                                      <option value="9">CASH</option>
-
-                                                      <option value="12">CASH</option>
-
-                                                    </select>
-
-                                                    </p>
-                                                    <p>
-
-
-                                                    </p>
-
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <input type="submit" class="btn btn-success" value="Submit">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                            </div>
-
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_modal5">Delete</button>
-                            </td>
-                          </tr>
-
-
 </table>
-
+    {% endfor %}
 {% endblock %}

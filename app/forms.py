@@ -9,8 +9,8 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class AssetForm(FlaskForm):
-    asset_class_name = StringField('Name', validators=[DataRequired()])
-    allocation_percent = StringField('Allocation Percent', validators=[DataRequired()])
+    asset_class_name = StringField('Asset Name', validators=[DataRequired()])
+    allocation_percent = StringField('Allocation Percentage', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class TickerForm(FlaskForm):

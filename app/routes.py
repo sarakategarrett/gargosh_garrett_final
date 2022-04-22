@@ -5,14 +5,19 @@ from app.models import User, Asset, Ticker
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from app.formatting import *
 from app.functions import *
+from app.update_ticker import *
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 
 @login_manager.user_loader
-def user_loader(id):
-    return User.query.get(int(id))
+def user_loader(user_id):
+    return User.query.get(int(user_id))
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('login'))
 
 
 @app.route('/')
@@ -30,28 +35,7 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = LoginForm()
-
-    form_username = form.username.data
-    form_password = form.password.data
-
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form_username).first()
-        password = user.password
-        if user is None or password != form_password:
-            flash("Invalid Username or Password")
-            return redirect(url_for("login"))
-        login_user(user, remember=form.remember_me.data)
-        session.permanent = True
-        return redirect(url_for("home"))
-    return render_template("login.html", title="Sign In", form=form)
-
-
-@app.route('/asset', methods=['GET', 'POST'])
+@app.route('/asset_class', methods=['GET', 'POST'])
 def asset():
     form = AssetForm()
     if request.method == 'POST':
@@ -78,7 +62,7 @@ def asset_update(asset_class_id):
 
 @app.route('/asset_delete/<asset_class_id>/', methods=['GET', 'POST'])
 def asset_delete(asset_class_id):
-    db.session.query(Asset).filter(Asset.asset_class_id == asset_class_id).delete()
+    db.session.query(Asset).filter(Asset.asset_class_id == asset_class_id).delete(synchronize_session='fetch')
     db.session.commit()
     flash(f"The asset class has been deleted.")
     return redirect(url_for('asset'))
@@ -95,34 +79,58 @@ def tickers():
     if request.method == 'POST':
         ticker_symbol = request.form.get("ticker_symbol")
         company_name = request.form.get("company_name")
-        current_price = request.form.get("current_price")
-        tickers = Ticker(ticker_symbol=ticker_symbol, company_name=company_name, current_price=current_price)
-        db.session.add(tickers)
+        #current_price = request.form.get("current_price")
+        asset_class_id = request.form.get('asset_classes')
+        ticker = Ticker(ticker_symbol=ticker_symbol, company_name=company_name, asset_class_id=asset_class_id)
+        db.session.add(ticker)
         db.session.commit()
         return redirect(url_for('tickers'))
-    tickers = Ticker.query.order_by(Ticker.company_name)
+    tickers = get_ticker()
     # this is a join.. the item in the join section is the left table
-    return render_template('tickers.html', form=form, tickers=tickers)
-    ##return render_template("tickers.html")
+    return render_template('tickers.html', form=form, asset_classes=asset_classes, tickers=tickers)
 
 @app.route('/ticker_update/<ticker_id>/', methods=['GET', 'POST'])
 def ticker_update(ticker_id):
     ticker = Ticker.query.get(ticker_id)
     ticker.ticker_symbol = request.form.get("ticker_symbol")
     ticker.company_name = request.form.get("company_name")
-    ticker.current_price = request.form.get("current_price")
-    ticker.id = request.form.get("id")
+    ticker.asset_class_id = request.form.get("asset_class")
     db.session.commit()
-    flash(f"{ticker.ticker_symbol} has been updated.")
+    flash(f"The ticker has been updated.")
+    return redirect(url_for('tickers'))
+
+@app.route('/ticker_price_update', methods=['GET', 'POST'])
+def ticker_price_update():
+    post_ticker_prices()
     return redirect(url_for('tickers'))
 
 
 @app.route('/ticker_delete/<ticker_id>/', methods=['GET', 'POST'])
 def ticker_delete(ticker_id):
-    db.session.query(Ticker).filter(Ticker.id == id).delete()
+    db.session.query(Ticker).filter(Ticker.ticker_id == ticker_id).delete()
     db.session.commit()
     flash(f"The ticker has been deleted.")
     return redirect(url_for('tickers'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = LoginForm()
+
+    form_username = form.username.data
+    form_password = form.password.data
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form_username).first()
+        password = user.password
+        if user is None or password != form_password:
+            flash("Invalid Username or Password")
+            return redirect(url_for("login"))
+        login_user(user, remember=form.remember_me.data)
+        session.permanent = True
+        return redirect(url_for("home"))
+    return render_template("login.html", title="Sign In", form=form)
 
 
 @app.route('/logout')

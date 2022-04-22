@@ -72,33 +72,33 @@
 
 <table class = 'table'>
     <thead>
-        <th scope="col">Name</th>
-        <th scope="col">Date</th>
+        <th scope="col">Asset Class Name</th>
+        <th scope="col">Allocation Percent</th>
     </thead>
         {% for asset in assets %}
     <tr>
         {% if not asset.date  %}
         <td align="left"> {{ asset.asset_class_name }}</td>
-        <td align="left"> {{ asset.allocation_percent }}</td>
+        <td align="left"> {{ asset.allocation_percent }}%</td>
         {% else %}
         <td align="left"> {{ asset.asset_class_name }}</td>
-        <td align="left"> {{ asset.allocation_percent | percentageFormat }}</td>
+        <td align="left"> {{ asset.allocation_percent | percentageFormat }}%</td>
         {% endif %}
         <td>
 <!--update model -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update_modal{{asset.asset_class_id}}">Update Info</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update_modal{{asset.asset_class_id}}">Update</button>
             <div class="modal fade" id="update_modal{{asset.asset_class_id}}" aria-labelledby="update_modalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="update_modalLabel">Update Info</h5>
+                                <h5 class="modal-title" id="update_modalLabel">Update</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <form action="{{url_for('asset_update', asset_class_id=asset.asset_class_id)}}" method="POST" novalidate>
                             <div class="modal-body">
                                 <p>
                                     <label for="asset_class_name">Name:</label><br>
-                                    <input type="text" id="asset_class_name" name="allocation_percent" value="{{ asset.asset_class_name }}">
+                                    <input type="text" id="asset_class_name" name="asset_class_name" value="{{ asset.asset_class_name }}">
                                 </p>
                                 <p>
                                     <label for="allocation_percent">Allocation Percent:</label><br>

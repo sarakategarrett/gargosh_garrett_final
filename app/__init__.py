@@ -10,7 +10,6 @@ app.config.from_object(Config)
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-#### line to be removed with db_connect ####
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:Bluehorse7@sgarrett-4214-practice.c2e1dpbmjmfg.us-east-2.rds.amazonaws.com/sys'
 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=120)
