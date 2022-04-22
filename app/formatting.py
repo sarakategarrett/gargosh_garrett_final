@@ -6,6 +6,6 @@ def dateFormat(value):
     return value.strftime("%Y-%m-%d")
 
 @app.template_filter()
-def monayFormat(value):
+def moneyFormat(value):
     value = float(value)
     return f"${value:,.2f}"

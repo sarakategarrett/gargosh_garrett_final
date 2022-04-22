@@ -8,6 +8,7 @@ from app.db_connect import connect
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config['DEBUG'] = True
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:Bluehorse7@sgarrett-4214-practice.c2e1dpbmjmfg.us-east-2.rds.amazonaws.com/sys'
