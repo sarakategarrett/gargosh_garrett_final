@@ -1,7 +1,7 @@
 from flask import render_template, session, request, redirect, url_for, flash
 from app import app, db
-from app.forms import LoginForm, AssetForm, TickerForm
-from app.models import User, Asset, Ticker
+from app.forms import LoginForm, AssetForm, TickerForm, BlogForm
+from app.models import User, Asset, Ticker,  Blog
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from app.formatting import *
 from app.functions import *
@@ -9,7 +9,6 @@ from app.update_ticker import *
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -112,6 +111,95 @@ def ticker_delete(ticker_id):
     flash(f"The ticker has been deleted.")
     return redirect(url_for('tickers'))
 
+
+
+@app.route('/blog')
+def blog():
+    form = BlogForm()
+    if request.method == 'POST':
+        blog_title = request.form.get("blog_title")
+        blog_body = request.form.get("blog_body")
+        blog_date = request.form.get("blog_date")
+        blog_img = request.form.get("blog_img")
+        blogs = Blog(blog_title=blog_title, blog_body=blog_body, blog_date=blog_date, blog_img=blog_img)
+        db.session.add(blogs)
+        db.session.commit()
+        return redirect(url_for('blog'))
+    blogs = Blog.query.order_by(Blog.blog_date.desc()).all()
+    return render_template('blog.html', form=form, blogs=blogs)
+
+@app.route('/blog_detail/<blog_id>/')
+def blog_detail(blog_id):
+    form = BlogForm()
+    if request.method == 'POST':
+        blog = Blog.query.get(blog_id)
+        blog.blog_title = request.form.get("blog_title")
+        blog.blog_body = request.form.get("blog_body")
+        blog.blog_date = request.form.get("blog_date")
+        blog.blog_img = request.form.get("blog_img")
+        db.session.commit()
+        return redirect(url_for('blog_detail'))
+    blogs = Blog.query.order_by(Blog.blog_date.desc()).all()
+    return render_template('blog_detail.html', form=form, blogs=blogs)
+
+@app.route('/blog_view/<blog_id>/')
+def blog_view(blog_id):
+    form=BlogForm()
+    if request.method == 'POST':
+        blog = Blog.query.get(blog_id)
+        blog.blog_title = request.form.get("blog_title")
+        blog.blog_body = request.form.get("blog_body")
+        blog.blog_date = request.form.get("blog_date")
+        blog.blog_img = request.form.get("blog_img")
+        db.session.commit()
+        return redirect(url_for('blog'))
+    blogs = Blog.query.order_by(Blog.blog_date.desc()).all()
+    page = request.args.get('page', 1, type=int)
+    pagination = Blog.query.order_by(Blog.blog_date.desc()).paginate(page,
+                per_page=current_app.config['FLASKY_POSTS_PER_PAGE'], error_out=False)
+    return render_template('blog.html', blogs=blogs)
+    blogs = pagination.items
+    return render_template('blog.html', form=form, blogs=blogs, pagination=pagination)
+
+
+@app.route('/blog_edit',  methods=['GET', 'POST'])
+def blog_edit():
+    form = BlogForm()
+    if request.method == 'POST':
+        blog_title = request.form.get("blog_title")
+        blog_body = request.form.get("blog_body")
+        blog_date = request.form.get("blog_date")
+        blog_img = request.form.get("blog_img")
+        blogs = Blog(blog_title=blog_title, blog_body=blog_body, blog_date=blog_date, blog_img=blog_img)
+        db.session.add(blogs)
+        db.session.commit()
+        return redirect(url_for('blog_edit'))
+    blogs = Blog.query.order_by(Blog.blog_date.desc()).all()
+    return render_template('blog_edit.html', form=form, blogs=blogs)
+
+@app.route('/blog_update/<blog_id>/', methods=['GET', 'POST'])
+def blog_update(blog_id):
+    blog = Blog.query.get(blog_id)
+    blog.blog_title = request.form.get("blog_title")
+    blog.blog_body = request.form.get("blog_body")
+    blog.blog_date = request.form.get("blog_date")
+    blog.blog_img = request.form.get("blog_img")
+    db.session.commit()
+    flash(f"{blog.blog_title} has been updated.")
+    return redirect(url_for('blog_edit'))
+
+
+
+@app.route('/blog_delete/<blog_id>/', methods=['GET', 'POST'])
+def blog_delete(blog_id):
+    db.session.query(Blog).filter(Blog.blog_id == blog_id).delete(synchronize_session='fetch')
+    db.session.commit()
+    flash(f"The Blog Post has been deleted.")
+    return redirect(url_for('blog_edit'))
+
+
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -132,9 +220,13 @@ def login():
         return redirect(url_for("home"))
     return render_template("login.html", title="Sign In", form=form)
 
-
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("home"))
+
+
+
+
+

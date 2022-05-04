@@ -10,3 +10,7 @@ def percentageFormat(value):
 def moneyFormat(value):
     value = float(value)
     return f"${value:,.2f}"
+
+@app.template_filter()
+def dateFormat(value):
+    return value.strftime("%Y-%m-%d")

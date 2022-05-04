@@ -16,3 +16,4 @@ def get_tickers():
         cur.execute(sql)
         return cur.fetchall()
 
+

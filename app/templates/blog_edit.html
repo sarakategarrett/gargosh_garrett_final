@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block title %}DIY Money {% endblock %}
+
+{% block nav_active_blog_edit %}active" aria-current"page{% endblock %}
+
+{% block body %}
+<!-- Header - set the background image for the header in the line below-->
+        <header class="py-5 bg-image-full" style="background-image: url('https://www.investopedia.com/thmb/l__0yRGdXNiac8kUY8Mj2LxF2uU=/2301x1303/filters:fill(auto,1)/GettyImages-1220909109-00cd067f887a48408340f54ddf0ecb1d.jpg')">
+            <div class="text-center my-5">
+                <h1 class="text-white fs-2 fw-bolder btn-dark btn-lg">Welcome to DIY Money</h1>
+            </div>
+        </header>
+
+<br>
+<h1>Resources
+    <br>
+<button type="button" class="btn btn-success btn-lg btn-block" data-bs-toggle="modal" data-bs-target="#add_blog">Add Blog Post</button>
+</h1>
+<br>
+
+
+<!-- add blog post -->
+<div class="modal fade" id="add_blog" aria-labelledby="add_blog_Label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="add_modalLabel">Add Blog Post</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{{ url_for('blog_edit') }}" method="POST" novalidate>
+                        <div class="modal-body">
+                                {{ form.hidden_tag() }}
+                            <p>
+                                {{ form.blog_title.label }}<br>
+                                {{ form.blog_title(size=32) }}
+                                {% for error in form.blog_title.errors %}
+                                <span style="color: red;">[{{ error }}] </span>
+                                {% endfor %}
+                            </p>
+                            <p>
+                                {{ form.blog_body.label }}<br>
+                                {{ form.blog_body(size=1000) }}
+                                {% for error in form.blog_body.errors %}
+                                <span style="color: red;">[{{ error }}] </span>
+                                {% endfor %}
+                            </p>
+                            <p>
+                                {{ form.blog_date.label }}<br>
+                                {{ form.blog_date(class='datepicker') }}
+                                {% for error in form.blog_date.errors %}
+                                <span style="color: red;">[{{ error }}] </span>
+                                {% endfor %}
+                            </p>
+                            <p>
+                                {{ form.blog_img.label }}<br>
+                                {{ form.blog_img(size=32) }}
+                                {% for error in form.blog_img.errors %}
+                                <span style="color: red;">[{{ error }}] </span>
+                                {% endfor %}
+                            </p>
+                            <p> {{ form.submit(class="btn btn-success") }} </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+</div>
+
+
+<table class = 'table'>
+    <thead>
+        <th scope="col">Title</th>
+        <th scope="col">Body</th>
+        <th scope="col">Date</th>
+        <th scope="col">Image URL</th>
+    </thead>
+        {% for blog in blogs %}
+    <tr>
+        {% if not blog.blog_date  %}
+        <td align="left"> {{ blog.blog_title }}</td>
+        <td align="left"> {{ blog.blog_body }}</td>
+        <td align="left"> {{ blog.blog_date }}</td>
+        <td align="left"> {{ blog.blog_img }}</td>
+        {% else %}
+        <td align="left"> {{ blog.blog_title }}</td>
+        <td align="left"> {{ blog.blog_body }}</td>
+        <td align="left"> {{ blog.blog_date | dateFormat }}</td>
+        <td align="left"> {{ blog.blog_img }}</td>
+        {% endif %}
+        <td>
+<!--update model -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update_modal{{blog.blog_id}}">Update Post</button>
+            <div class="modal fade" id="update_modal{{blog.blog_id}}" aria-labelledby="update_modalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="update_modalLabel">Update Post</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{{url_for('blog_update', blog_id=blog.blog_id)}}" method="POST" novalidate>
+                            <div class="modal-body">
+                                    {{ form.hidden_tag() }}
+                                <p>
+                                    {{ form.blog_title.label }}<br>
+                                    {{ form.blog_title(size=32, value=blog.blog_title) }}
+                                    {% for error in form.blog_title.errors %}
+                                    <span style="color: red">[{{ error }}] </span>
+                                    {% endfor %}
+                                </p>
+                                <p>
+                                    {{ form.blog_body.label }}<br>
+                                    {{ form.blog_body(size=32, value=blog.blog_body) }}
+                                    {% for error in form.blog_body.errors %}
+                                    <span style="color: red">[{{ error }}] </span>
+                                    {% endfor %}
+                                </p>
+                                <p>
+                                    {{ form.blog_date.label }}<br>
+                                    {{ form.blog_date(class='datepicker') }}
+                                    {% for error in form.blog_date.errors %}
+                                    <span style="color: red;">[{{ error }}] </span>
+                                    {% endfor %}
+                                </p>
+                                <p>
+                                    {{ form.blog_img.label }}<br>
+                                    {{ form.blog_img(size=32, value=blog.blog_img) }}
+                                    {% for error in form.blog_img.errors %}
+                                    <span style="color: red">[{{ error }}] </span>
+                                    {% endfor %}
+                                </p>
+                                <p> {{ form.submit(text='Update Post', class="btn btn-success") }} </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+<!-- Delete button and modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_modal{{blog.blog_id}}">Delete</button>
+            <div class="modal fade" id="delete_modal{{blog.blog_id}}" aria-labelledby="delete_modalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="delete_modalLabel">Delete Post</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{{url_for('blog_delete', blog_id=blog.blog_id)}}" method="POST" novalidate>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete {{ blog.blog_title }}? This can't be undone. </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form action="/blog_delete/3/" }} method="POST" novalidate>
+                                    <input type="submit" class="btn btn-danger" value="Delete">
+                                </form>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

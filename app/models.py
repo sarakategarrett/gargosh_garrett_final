@@ -28,3 +28,11 @@ class Ticker(db.Model):
     #current_price = db.Column(db.String(166))
     asset_class_id = db.Column(db.Integer, db.ForeignKey('asset.asset_class_id'), nullable=False)
 
+class Blog(db.Model):
+    blog_id = db.Column(db.Integer, primary_key=True)
+    blog_title = db.Column(db.String(166), index=True, unique=True)
+    blog_body = db.Column(db.String(166), index=True, unique=True)
+    blog_date = db.Column(db.DateTime, index=True)
+    blog_img = db.Column(db.String(166), index=True)
+
+

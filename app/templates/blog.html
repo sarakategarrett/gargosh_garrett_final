@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+
+{% block title %} Resources{% endblock %}
+
+{% block nav_active_blog %}active" aria-current"page{% endblock %}
+
+{% block body %}
+<header class="py-5 bg-image-full" style="background-image: url('https://www.investopedia.com/thmb/l__0yRGdXNiac8kUY8Mj2LxF2uU=/2301x1303/filters:fill(auto,1)/GettyImages-1220909109-00cd067f887a48408340f54ddf0ecb1d.jpg')">
+            <div class="text-center my-5">
+                <h1 class="text-white fs-2 fw-bolder btn-dark btn-lg">Resources</h1>
+            </div>
+</header>
+<!-- make into table of buttons that leads to diff blog posts -->
+<table class = 'table'>
+    <thead>
+        <th scope="col">Title</th>
+    </thead>
+        {% for blog in blogs %}
+    <tr>
+        <td align="left">
+            {{ blog.blog_title }}
+        </td>
+        <td>
+            <!-- view post modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#view_modal{{blog.blog_id}}">View More</button>
+        <div class="modal fade" id="view_modal{{blog.blog_id}}" aria-labelledby="view_modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="view_modalLabel">{{ blog.blog_title }}</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            <form action="{{url_for('blog_view', blog_id=blog.blog_id)}}" method="POST" novalidate>
+            <div class="modal-body">
+       <li class="blog">
+
+           <h1>
+                <div class="blog-body">{{ blog.blog_body }}</div>
+               <img class="image" src='{{ blog.blog_img }}' alt="Image Not Found">
+           </h1>
+       </li>
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit Post</button>
+                </div>
+               </form>
+            </div>
+        </div>
+    </div>
+
+
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+{% endblock %}
